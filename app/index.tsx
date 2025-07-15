@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import {
-  Animated,
-  ScrollView,
-  StyleSheet,
-  TouchableWithoutFeedback,
   View,
+  StyleSheet,
+  Image,
+  TouchableWithoutFeedback,
+  ScrollView,
+  Animated,
 } from 'react-native';
 
 const imageData = [
@@ -57,21 +58,21 @@ const imageData = [
 
 export default function ImageGrid() {
   const [images, setImages] = useState(
-    imageData.map((img) => ({
+    imageData.map(img => ({
       ...img,
       isFlipped: false,
       scale: new Animated.Value(1),
       scaleNum: 1,
-    }))
+    })) 
   );
 
   const handlePress = (id: number) => {
-    setImages((prevImages) =>
-      prevImages.map((img) => {
+    setImages(prevImages =>
+      prevImages.map(img => {
         if (img.id === id) {
-          const newScale = Math.min(img.scaleNum * 1.2, 2);
+          const newScaleNum = Math.min(img.scaleNum * 1.2, 2);
           Animated.timing(img.scale, {
-            toValue: newScale,
+            toValue: newScaleNum,
             duration: 200,
             useNativeDriver: true,
           }).start();
@@ -79,7 +80,7 @@ export default function ImageGrid() {
           return {
             ...img,
             isFlipped: !img.isFlipped,
-            scaleNum: newScale,
+            scaleNum: newScaleNum,
           };
         }
         return img;
@@ -90,13 +91,21 @@ export default function ImageGrid() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.grid}>
-        {images.map((img) => (
-          <TouchableWithoutFeedback key={img.id} onPress={() => handlePress(img.id)}>
-            <Animated.Image
-              source={{ uri: img.isFlipped ? img.altSrc : img.mainSrc }}
-              style={[styles.image, { transform: [{ scale: img.scale }] }]}
-              resizeMode="cover"
-            />
+        {images.map(img => (
+          <TouchableWithoutFeedback
+            key={img.id}
+            onPress={() => handlePress(img.id)}
+          >
+            <View style={styles.cell}>
+              <Animated.Image
+                source={{ uri: img.isFlipped ? img.altSrc : img.mainSrc }}
+                style={[
+                  styles.image,
+                  { transform: [{ scale: img.scale }] }
+                ]}
+                resizeMode="cover"
+              />
+            </View>
           </TouchableWithoutFeedback>
         ))}
       </View>
@@ -115,11 +124,17 @@ const styles = StyleSheet.create({
     width: 330,
     justifyContent: 'center',
   },
-  image: {
+  cell: {
     width: 100,
     height: 100,
     margin: 5,
-    borderRadius: 8,
     backgroundColor: '#eee',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
   },
 });
