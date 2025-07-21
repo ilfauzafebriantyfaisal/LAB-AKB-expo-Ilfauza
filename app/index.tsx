@@ -7,48 +7,47 @@ const daftarNama = [
   "FAUZAN AZHARI RAHMAN - 105841109622",
   "MUH. FADHIL AHMAD - 105841109722",
   "DAYANG AISYAH - 105841109822",
-  "ILFAUZA FEBRIANTY FAISAL - 105841110222", // Target
+  "ILFAUZA FEBRIANTY FAISAL - 105841110222", // 🎯 Target
   "SA'BAN - 105841110322",
   "NUR FADILLAH SARI - 105841110422",
   "WA NANDA SULYSTRIAN - 105841110622",
   "MUH. TEGAR AL FIKRI - 105841110722",
 ];
 
+// 🎯 Posisi target
 const posisiUtama = 5;
 const jumlahNama = daftarNama.length;
 
-// ⏪ Ambil 5 nama sebelum
+// Ambil 5 nama sebelum dan sesudah (wrap-around)
 const namaSebelum = [];
 for (let i = 5; i >= 1; i--) {
   const idx = (posisiUtama - i + jumlahNama) % jumlahNama;
   namaSebelum.push(daftarNama[idx]);
 }
-
-// ⏩ Ambil 5 nama setelah
 const namaSetelah = [];
 for (let i = 1; i <= 5; i++) {
   const idx = (posisiUtama + i) % jumlahNama;
   namaSetelah.push(daftarNama[idx]);
 }
 
-// Gabungkan, lalu hapus duplikat jika ada
+// Gabungkan dan hapus duplikat (kalau ada)
 const daftarGabungan = [...namaSebelum, daftarNama[posisiUtama], ...namaSetelah];
 const daftarFinal = daftarGabungan.filter(
   (item, index, self) => self.indexOf(item) === index
 );
 
-// Font
+// ✅ Daftar 10 font konsisten dengan _layout.tsx
 const jenisFont = [
-  "AbrilFatface-Regular",
-  "BowlbyOne-Regular",
-  "Michroma-Regular",
-  "Play-Regular",
-  "Shojumaru-Regular",
-  "Montserrat-Variable",
-  "Raleway-Variable",
-  "Roboto-Variable",
-  "Rubik-Variable",
-  "TikTokSans-Variable",
+  "AbrilFatface",   // Static
+  "BowlbyOne",      // Static
+  "Michroma",       // Static
+  "Play",           // Static
+  "Shojumaru",      // Static
+  "Montserrat",     // Variable
+  "Raleway",        // Variable
+  "Roboto",         // Variable
+  "Rubik",          // Variable
+  "TikTokSans",     // Variable
 ];
 
 export default function HomeScreen() {
@@ -80,7 +79,9 @@ export default function HomeScreen() {
                 >
                   {itemNama}
                 </Text>
-                <Text style={gaya.fontLabel}>{jenisFont[globalIndex]}</Text>
+                <Text style={gaya.fontLabel}>
+                  {jenisFont[globalIndex]} {globalIndex < 5 ? "(Statis)" : "(Variabel)"}
+                </Text>
               </View>
             );
           })}
