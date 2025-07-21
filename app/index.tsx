@@ -1,138 +1,49 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Entypo from '@expo/vector-icons/Entypo';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Feather from '@expo/vector-icons/Feather';
 
-// 🔡 Daftar nama lengkap beserta stambuk
-const daftarNama = [
-  "DINDA SAFITRI - 105841109322",
-  "MUH. FARREL APTA INDRATAMA - 105841109422",
-  "FAUZAN AZHARI RAHMAN - 105841109622",
-  "MUH. FADHIL AHMAD - 105841109722",
-  "DAYANG AISYAH - 105841109822",
-  "ILFAUZA FEBRIANTY FAISAL - 105841110222", // 🎯 Target
-  "SA'BAN - 105841110322",
-  "NUR FADILLAH SARI - 105841110422",
-  "WA NANDA SULYSTRIAN - 105841110622",
-  "MUH. TEGAR AL FIKRI - 105841110722",
-];
-
-// 🎯 Posisi target
-const posisiUtama = 5;
-const jumlahNama = daftarNama.length;
-
-// Ambil 5 nama sebelum dan sesudah (wrap-around)
-const namaSebelum = [];
-for (let i = 5; i >= 1; i--) {
-  const idx = (posisiUtama - i + jumlahNama) % jumlahNama;
-  namaSebelum.push(daftarNama[idx]);
-}
-const namaSetelah = [];
-for (let i = 1; i <= 5; i++) {
-  const idx = (posisiUtama + i) % jumlahNama;
-  namaSetelah.push(daftarNama[idx]);
-}
-
-// Gabungkan dan hapus duplikat (kalau ada)
-const daftarGabungan = [...namaSebelum, daftarNama[posisiUtama], ...namaSetelah];
-const daftarFinal = daftarGabungan.filter(
-  (item, index, self) => self.indexOf(item) === index
-);
-
-// ✅ Daftar 10 font konsisten dengan _layout.tsx
-const jenisFont = [
-  "AbrilFatface",   // Static
-  "BowlbyOne",      // Static
-  "Michroma",       // Static
-  "Play",           // Static
-  "Shojumaru",      // Static
-  "Montserrat",     // Variable
-  "Raleway",        // Variable
-  "Roboto",         // Variable
-  "Rubik",          // Variable
-  "TikTokSans",     // Variable
-];
-
-export default function HomeScreen() {
+const IconScreen = () => {
   return (
-    <ScrollView contentContainerStyle={gaya.kontainer}>
-      <Text style={gaya.judul}>📘 10 Nama Berdasarkan Urutan Stambuk</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>10 Ikon Berbeda</Text>
 
-      {[0, 1].map((baris) => (
-        <View key={baris} style={gaya.baris}>
-          {daftarFinal.slice(baris * 5, baris * 5 + 5).map((itemNama, index) => {
-            const globalIndex = baris * 5 + index;
-            const sorot = itemNama.toLowerCase().includes("ilfauza");
-
-            return (
-              <View
-                key={globalIndex}
-                style={[gaya.kartu, sorot && gaya.kartuSorot]}
-              >
-                <Text
-                  style={[
-                    gaya.nama,
-                    {
-                      fontFamily: jenisFont[globalIndex],
-                      color: sorot ? "#b02a2a" : "#1e1e1e",
-                      fontWeight: sorot ? "bold" : "normal",
-                      fontSize: sorot ? 17 : 15,
-                    },
-                  ]}
-                >
-                  {itemNama}
-                </Text>
-                <Text style={gaya.fontLabel}>
-                  {jenisFont[globalIndex]} {globalIndex < 5 ? "(Statis)" : "(Variabel)"}
-                </Text>
-              </View>
-            );
-          })}
-        </View>
-      ))}
+      <View style={styles.iconColumn}>
+        <AntDesign name="home" size={30} color="#4A90E2" style={styles.icon} />
+        <Entypo name="rocket" size={30} color="#E74C3C" style={styles.icon} />
+        <FontAwesome name="car" size={30} color="#2ECC71" style={styles.icon} />
+        <MaterialIcons name="email" size={30} color="#9B59B6" style={styles.icon} />
+        <Feather name="camera" size={30} color="#F39C12" style={styles.icon} />
+        <AntDesign name="calendar" size={30} color="#16A085" style={styles.icon} />
+        <Entypo name="game-controller" size={30} color="#2980B9" style={styles.icon} />
+        <FontAwesome name="bicycle" size={30} color="#8E44AD" style={styles.icon} />
+        <MaterialIcons name="wifi" size={30} color="#D35400" style={styles.icon} />
+        <Feather name="moon" size={30} color="#34495E" style={styles.icon} />
+      </View>
     </ScrollView>
   );
-}
+};
 
-const gaya = StyleSheet.create({
-  kontainer: {
-    paddingVertical: 36,
-    paddingHorizontal: 16,
-    backgroundColor: "#f9fafb",
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    alignItems: 'center',
   },
-  judul: {
+  title: {
     fontSize: 22,
-    fontWeight: "700",
-    marginBottom: 24,
-    textAlign: "center",
-    color: "#264653",
+    marginBottom: 20,
+    fontWeight: 'bold',
   },
-  baris: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 24,
+  iconColumn: {
+    flexDirection: 'column',
+    alignItems: 'center',
   },
-  kartu: {
-    width: "18%",
-    backgroundColor: "#ffffff",
-    padding: 10,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
-    alignItems: "center",
-  },
-  kartuSorot: {
-    backgroundColor: "#ffe8cc",
-    borderWidth: 1,
-    borderColor: "#f77f00",
-  },
-  nama: {
-    textAlign: "center",
-  },
-  fontLabel: {
-    fontSize: 10,
-    color: "#6c757d",
-    marginTop: 4,
-    textAlign: "center",
+  icon: {
+    marginVertical: 10,
   },
 });
+
+export default IconScreen;
