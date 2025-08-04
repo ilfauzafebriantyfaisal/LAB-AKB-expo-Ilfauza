@@ -2,6 +2,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { Text } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,17 +23,29 @@ export default function RootLayout() {
     "TikTokSans": require("../assets/fonts/variabel/TikTokSans-VariableFont_opsz,slnt,wdth,wght.ttf"),
   });
 
-  useEffect(() => {
-    if (loaded && !error) {
+useEffect(() => {
+    if (loaded || error) {
       SplashScreen.hideAsync();
-    }
-
-    if (error) {
-      console.error("❌ Failed to load fonts:", error);
     }
   }, [loaded, error]);
 
-  if (!loaded) return null;
+  if (!loaded && !error) {
+    return null;
+  }
 
-  return <Stack />;
+  if (error) {
+    console.error("Gagal memuat font:", error);
+    return <Text>Terjadi kesalahan saat memuat font.</Text>;
+  }
+
+  return (
+    <Stack>
+      <Stack.Screen 
+        name="(tabs)"
+        options={{
+          headerShown: false
+        }} 
+      />
+    </Stack>
+  );
 }
